@@ -2,7 +2,11 @@
 
 # Instructions
 
+<<<<<<< HEAD
 To run this demo, please
+=======
+To run this demo, please 
+>>>>>>> 1ab996951ee084286dde6cae97a29336161be460
 
 1. Clone the repo
 2. Open terminal
