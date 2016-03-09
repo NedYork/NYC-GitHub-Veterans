@@ -8,27 +8,24 @@ require 'byebug'
 def usernames_get(location)
   location_query = location.split(" ").join("+")
 
-
   begin
     #sorts by location: new york and in order which user joined GitHub
     url = "https://api.github.com/search/users?q=location%3A" + location_query + "&sort=joined&order=asc"
-    uri = URI(url)
-    resp = Net::HTTP.get(uri)
+    resp = Net::HTTP.get(URI(url))
     data = JSON.parse(resp)['items']
 
-    usernames = [];
-    data.each do |user|
-      usernames << user['login']
-    end
+    usernames = data.map { |user| user['login'] }
 
   rescue
      print "Connection error."
   end
+
   usernames
 end
 
 # Parse through each user for more specific data
 # Makes 1 request per user
+# Likely a better way to do this
 def grab_user_data(usernames_array)
   result = [];
   usernames_array.each do |username|
