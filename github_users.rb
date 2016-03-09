@@ -5,6 +5,7 @@ require 'csv'
 require 'byebug'
 
 # GET Request For All Users in NY- GitHub API
+# Returns ordered list of usernames of users in a specific location
 def usernames_get(location)
   location_query = location.split(" ").join("+")
 
@@ -13,9 +14,7 @@ def usernames_get(location)
     url = "https://api.github.com/search/users?q=location%3A" + location_query + "&sort=joined&order=asc"
     resp = Net::HTTP.get(URI(url))
     data = JSON.parse(resp)['items']
-
     usernames = data.map { |user| user['login'] }
-
   rescue
      print "Connection error."
   end
@@ -31,12 +30,10 @@ def grab_user_data(usernames_array)
   usernames_array.each do |username|
     begin
       url = "https://api.github.com/users/#{username}"
-      uri = URI(url)
-      resp = Net::HTTP.get(uri)
+      resp = Net::HTTP.get(URI(url))
       user = JSON.parse(resp)
       result << [user['login'], user['name'], user['location'], user['public_repos']]
       break if result.length == 10
-
     rescue
        print "Connection error."
     end
@@ -49,7 +46,7 @@ end
 def csv_create(user_data_array)
   CSV.open("top_10_github_NY.csv", "wb") do |csv|
     csv << ["login", "name", "location", "repo count"]
-
+    
     user_data_array.each do |user|
       csv << user
     end
