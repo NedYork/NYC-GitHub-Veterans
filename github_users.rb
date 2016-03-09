@@ -7,8 +7,10 @@ require 'byebug'
 # GET Request For All Users in NY- GitHub API
 def usernames_get(location)
   location_query = location.split(" ").join("+")
+
+
   begin
-    # GitHub API sorts by location: new york and in order which user joined GitHub
+    #sorts by location: new york and in order which user joined GitHub
     url = "https://api.github.com/search/users?q=location%3A" + location_query + "&sort=joined&order=asc"
     uri = URI(url)
     resp = Net::HTTP.get(uri)
@@ -57,7 +59,8 @@ def csv_create(user_data_array)
   end
 end
 
-
+# can specify which location
+# e.g. usernames_get("san francisco")
 usernames = usernames_get("new york")
 user_data = grab_user_data(usernames)
 csv_create(user_data)
