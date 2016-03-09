@@ -9,9 +9,11 @@ require 'byebug'
 begin
   # example query
   # https://api.github.com/search/users?q=tom+repos:%3E42+followers:%3E1000
-  # https://api.github.com/search/users?q=location%3Anew+york
+  # https://api.github.com/search/users?q=tom+repos:>42+followers:>1000
+  # https://api.github.com/search/users?q=location%3Anew+york&sort=joined&order=desc
 
-  url = 'https://api.github.com/search/users?q=location%3Anew+york'
+  # GitHub API sorts by location: new york and in order which user joined GitHub
+  url = 'https://api.github.com/search/users?q=location%3Anew+york&sort=joined&order=asc'
   uri = URI(url)
   resp = Net::HTTP.get(uri)
   data = JSON.parse(resp)['items']
