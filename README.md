@@ -3,9 +3,10 @@
 # Instructions
 
 To run this demo, please 
-1. Clone the repo. 
-2. Open terminal.
-3. 'cd' to unzipped repo directory.
+
+1. Clone the repo
+2. Open terminal
+3. 'cd' to unzipped repo directory
 4. Run 'ruby github_users.rb'
 
 
