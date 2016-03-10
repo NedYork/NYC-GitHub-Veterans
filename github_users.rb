@@ -32,6 +32,7 @@ def grab_user_data(usernames_array)
       url = "https://api.github.com/users/#{username}"
       resp = Net::HTTP.get(URI(url))
       user = JSON.parse(resp)
+      next unless user['location'] =~ /new.?york/i
       result << [user['login'], user['name'], user['location'], user['public_repos']]
       break if result.length == 10
     rescue
@@ -46,7 +47,7 @@ end
 def csv_create(user_data_array)
   CSV.open("top_10_github_NY.csv", "wb") do |csv|
     csv << ["login", "name", "location", "repo count"]
-    
+
     user_data_array.each do |user|
       csv << user
     end
