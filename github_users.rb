@@ -19,20 +19,24 @@ def usernames_get(location)
      print "Connection error."
   end
 
-  usernames
+  [usernames, location]
 end
 
 # Parse through each user for more specific data
 # Makes 1 request per user
 # Likely a better way to do this
-def grab_user_data(usernames_array)
+def grab_user_data(name_location_array)
   result = [];
+  usernames_array = name_location_array.first
+  location = name_location_array.last.split(" ")
+  location_regex = "#{location.join(".?")}"
+
   usernames_array.each do |username|
     begin
       url = "https://api.github.com/users/#{username}"
       resp = Net::HTTP.get(URI(url))
       user = JSON.parse(resp)
-      next unless user['location'] =~ /new.?york/i
+      next unless user['location'] =~ Regexp.new(location_regex, "i")
       result << [user['login'], user['name'], user['location'], user['public_repos']]
       break if result.length == 10
     rescue
@@ -40,6 +44,7 @@ def grab_user_data(usernames_array)
     end
   end
   result
+
 end
 
 
@@ -56,6 +61,6 @@ end
 
 # can specify which location
 # e.g. usernames_get("san francisco")
-usernames = usernames_get("new york")
+usernames = usernames_get("san francisco")
 user_data = grab_user_data(usernames)
 csv_create(user_data)
