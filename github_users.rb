@@ -15,6 +15,7 @@ def usernames_get(location)
     resp = Net::HTTP.get(URI(url))
     data = JSON.parse(resp)['items']
     usernames = data.map { |user| user['login'] }
+    byebug
   rescue
      print "Connection error."
   end
